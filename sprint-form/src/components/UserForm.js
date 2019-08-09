@@ -1,18 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { withFormik, Form, Field } from 'formik';
 import Yup from 'yup';
+import Users from './Users';
+import axios from 'axios';
 
-const UserForm = () => {
+const UserForm = ({ errors, touched, values, handleSubmit, status }) => {
 
-    return(
-        <>
-            <Form>
-                <Field type="text" name="username" placeholder="Username" />
-                <Field type="password" name="password" placeholder="Password" />
-                <button>Submit</button>
-            </Form>
-        </>
-    )
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    if(status) {
+      setUsers([...users, status])
+    }
+  })
+
+  return(
+      <>
+          <Form>
+              <Field type="text" name="username" placeholder="Username" />
+              <Field type="password" name="password" placeholder="Password" />
+              <button>Submit</button>
+          </Form>
+          <Users />
+      </>
+  )
 }
 
 const FormikUserForm = withFormik({
@@ -22,10 +33,18 @@ const FormikUserForm = withFormik({
         password: password || ""
       };
     },
+
+    validationSchema: Yup.object().shape({
+      username: Yup.string().required(),
+      password: Yup.string().required()
+    }),
   
-    handleSubmit(values) {
+    handleSubmit(values, { setStatus }) {
       console.log(values);
-      
+      axios
+        .post(`http://localhost:5000/api/register`)
+        .then(res => setStatus(res.data))
+        .catch(err => console.err(err.response))
     }
   })(UserForm);
 

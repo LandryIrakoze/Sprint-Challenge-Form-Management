@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { withFormik, Form, Field } from 'formik';
-import Yup from 'yup';
+import * as Yup from 'yup';
 import Users from './Users';
 import axios from 'axios';
 

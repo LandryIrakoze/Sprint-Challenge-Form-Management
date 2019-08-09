@@ -1,7 +1,6 @@
 import React from 'react';
 
 const UserData = ({ info }) => {
-    console.log('userdataprops', info)
 
     return (
         <>

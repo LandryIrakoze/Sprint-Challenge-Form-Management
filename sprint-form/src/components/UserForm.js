@@ -69,20 +69,6 @@ const FormikUserForm = withFormik({
           console.log('response data', res.data);
         })
         .catch(err => console.error(err.response));
-    // axios
-    //     .get(`http://localhost:5000/api/restricted/data`, {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: `${localStorage.getItem('token')}`
-    //       }
-    //     })
-    //     .then(res => {
-    //       console.log('response data', res.data);
-    //       var data = res.data;
-    //       return (
-    //         <UserData info={data}/>
-    //       )
-    //     })
     }
   })(UserForm);
 

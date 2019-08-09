@@ -7,12 +7,13 @@ import axios from 'axios';
 const UserForm = ({ errors, touched, values, handleSubmit, status }) => {
 
   const [users, setUsers] = useState([]);
+  console.log(users);
 
   useEffect(() => {
     if(status) {
       setUsers([...users, status])
     }
-  })
+  }, [status])
 
   return(
       <>
@@ -42,9 +43,9 @@ const FormikUserForm = withFormik({
     handleSubmit(values, { setStatus }) {
       console.log(values);
       axios
-        .post(`http://localhost:5000/api/register`)
+        .post(`http://localhost:5000/api/register`, values)
         .then(res => setStatus(res.data))
-        .catch(err => console.err(err.response))
+        .catch(err => console.error(err.response))
     }
   })(UserForm);
 

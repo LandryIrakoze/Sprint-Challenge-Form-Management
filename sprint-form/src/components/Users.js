@@ -1,11 +1,17 @@
 import React from 'react';
 
-const Users = (props) => {
+const Users = ({ info }) => {
+
+    console.log('info', info);
 
     return (
         <>
-            <p>username: {}</p>
-            <p>password: {}</p>
+            {/* {info.map(item => (
+                <>
+                    <p>username: {item.username}</p>
+                    <p>password: {item.password}</p>
+                </>
+            ))} */}
         </>
     )
 }

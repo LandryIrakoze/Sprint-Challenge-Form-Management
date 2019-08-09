@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import FormikUserForm from './UserForm';
+import { Route } from 'react-router-dom';
+import UserData from './UserData';
 
 const Data = () => {
 
     return(
         <>
-            <FormikUserForm />
+            <Route exact path="/" render={props => <FormikUserForm {...props}/>} />
+            <Route exact path="/userData" render={props => <UserData {...props}/>} />
         </>
     )
 }

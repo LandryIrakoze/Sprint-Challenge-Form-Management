@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { withFormik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import Users from './Users';
+import UserData from './UserData';
 import axios from 'axios';
 
 const UserForm = ({ errors, touched, values, handleSubmit, status }) => {
 
   const [users, setUsers] = useState([]);
+  const [myData, setMyData] = useState([]);
+
   console.log(users);
 
   useEffect(() => {
@@ -15,19 +18,35 @@ const UserForm = ({ errors, touched, values, handleSubmit, status }) => {
     }
   }, [status])
 
+  useEffect(() => {
+    axios
+        .get(`http://localhost:5000/api/restricted/data`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${localStorage.getItem('token')}`
+          }
+        })
+        .then(res => {
+          console.log('response data', res.data);
+          setMyData(res.data);
+        })
+  },[])
+
   return(
       <>
           <Form>
               <Field type="text" name="username" placeholder="Username" />
               <Field type="password" name="password" placeholder="Password" />
-              <button>Submit</button>
+              <button type="submit">Submit</button>
           </Form>
-          <Users />
+          <Users info={users}/>
+          <UserData info={myData} />
       </>
   )
 }
 
 const FormikUserForm = withFormik({
+
     mapPropsToValues({ username, password }) {
       return {
         username: username || "",
@@ -49,7 +68,21 @@ const FormikUserForm = withFormik({
           setStatus(res.data);
           console.log('response data', res.data);
         })
-        .catch(err => console.error(err.response))
+        .catch(err => console.error(err.response));
+    // axios
+    //     .get(`http://localhost:5000/api/restricted/data`, {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: `${localStorage.getItem('token')}`
+    //       }
+    //     })
+    //     .then(res => {
+    //       console.log('response data', res.data);
+    //       var data = res.data;
+    //       return (
+    //         <UserData info={data}/>
+    //       )
+    //     })
     }
   })(UserForm);
 
